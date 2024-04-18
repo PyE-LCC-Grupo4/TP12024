@@ -5,6 +5,9 @@ library(ggplot2)
 library(forcats)
 library(dplyr)
 
+# Leo el xlsx
+df = read_excel("Datos_LP.xlsx", sheet = "FILTRO");
+
 i= as.factor(df$`Capacidad almacenaje`);
 
 labels = c("No tienen capacidad de almacenaje\no no almacenan agua", "Menos de 200 lts", "200 a 500 lts", "Más de 500 lts")

@@ -9,7 +9,7 @@ df = read_excel("Datos_LP.xlsx", sheet = "FILTRO");
 
 data <- data.frame(
   x=df$`Tiempo de residencia en la vivienda actual (en años)`,
-  y=df$`Cantidad Integrantes`)
+  y=df$Menores)
 
 # Se eliminaron algunos datos atipicos, mencionarlos en el video
 

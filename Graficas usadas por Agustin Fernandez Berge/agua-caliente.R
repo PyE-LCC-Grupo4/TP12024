@@ -1,5 +1,8 @@
 library(Hmisc)
 
+# Leo el xlsx
+df = read_excel("Datos_LP.xlsx", sheet = "FILTRO");
+
 cocina = as.factor(df$`Tiene agua caliente en la cocina`)
 baño = as.factor(df$`Tiene agua caliente en el baño`)
 
