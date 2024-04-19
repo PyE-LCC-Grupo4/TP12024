@@ -4,6 +4,8 @@ install.packages("tidyverse")
 
 library(readxl)
 library(ggplot2)
+library(forcats)
+library(dplyr)
 
 # URL
 df = read_excel("C:\\Users\\USUARIO\\Desktop\\Datos_LP (1).xlsx", sheet = "FILTRO");
@@ -118,6 +120,7 @@ legend("bottomleft", legend = casos, fill = c("#f68440", "#f03c59", "#bc6ccb", "
 mtext("Como se obtiene el agua en barrios populares", side = 3, line = 1, cex = 2)
 
 #8- Capacidad de almacenaje
+#Primera Versio (No la uso)
 capAlmacenaje = as.factor(df$`Capacidad almacenaje`);
 newTable <- table(capAlmacenaje)
 
@@ -131,6 +134,40 @@ barplot(newTable, horiz = TRUE,
         xlim = c(0,300),
         xaxp = c(0, 300,12))
 mtext("Capacidad de almacenaje por hogar \n en barrios populares", side=3, cex=2)
+
+
+#Segunda version (Si la uso)
+capAlmacenaje= as.factor(df$`Capacidad almacenaje`);
+
+labels = c("No tienen capacidad de almacenaje\no no almacenan agua", "Menos de 200 lts", "200 a 500 lts", "Más de 500 lts")
+valores = c(0,0,0,0)
+
+for(x in capAlmacenaje) {
+  if(is.na(x)) {
+    valores[1]=valores[1]+1;
+  }
+  else {
+    for(j in 2:4)
+      if(labels[j] == x)
+        valores[j] = valores[j]+1;
+  }
+}
+
+data = data.frame(
+  x = valores,
+  y = labels
+)
+
+mutated_data = mutate(data, y = fct_relevel(y, "Más de 500 lts", "200 a 500 lts", "Menos de 200 lts", "No tienen capacidad de almacenaje\no no almacenan agua"))
+
+ggplot(mutated_data, aes(x=x, y = y)) +
+  geom_bar(stat="identity", fill="#4dd0e1", width=.8) +
+  scale_x_continuous(name="Hogares", breaks = seq(0, 1000, 50)) + 
+  ylab("Capacidad de almacenaje") +
+  labs(title = "Capacidad de almacenaje de agua por hogar \n en barrios populares",
+       caption = "Fuente: Observatorio villero (2022)") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5), plot.caption  = element_text(hjust = 0.5))
 
 #9- Posee baño
 pie(c(1205, 17),
@@ -230,7 +267,4 @@ ggplot(data, aes(fill=fill, x=value)) +
   scale_x_discrete(name="Cantidad de plagas") + 
   scale_fill_discrete(name = "") +
   scale_y_continuous(name = "Hogares", breaks = seq(0,400,50))
-
-
-
 
